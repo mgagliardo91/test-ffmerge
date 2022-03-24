@@ -17,3 +17,6 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+          branch=$(gh pr view ${{github.event.issue.number}} --json headRefName --jq '.headRefName')
+          target=$(gh pr view ${{github.event.issue.number}} --json baseRefName --jq '.baseRefName')
+          echo "from $branch to $target"
