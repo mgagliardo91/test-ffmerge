@@ -3,11 +3,13 @@ name: FF Merge
 on: 
   issue_comment:
     types: [created]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   ff-merge:
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/fast-forward')
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body || github.event.review.body, '/fast-forward')
     steps:
       - name: Fast Forward
         uses: ndustrialio/actions/ffmerge@main
