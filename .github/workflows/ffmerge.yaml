@@ -5,18 +5,9 @@ on:
     types: [created]
 
 jobs:
-  test:
+  ff-merge:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/fast-forward')
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Fast Forward PR
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
-          branch=$(gh pr view ${{github.event.issue.number}} --json headRefName --jq '.headRefName')
-          target=$(gh pr view ${{github.event.issue.number}} --json baseRefName --jq '.baseRefName')
-          echo "from $branch to $target"
+      - name: Fast Forward
+        uses: ndustrialio/actions/ffmerge@main
