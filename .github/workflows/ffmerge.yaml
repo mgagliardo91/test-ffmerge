@@ -7,9 +7,18 @@ on:
     types: [submitted]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+          echo "${{ github.event.issue.pull_request }}"
+          echo "${{ github.event.comment.body }}"
+          echo "${{ github.event.review.pull_request }}"
+          echo "${{ github.event.review.body }}"
   ff-merge:
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request != '' && (contains(github.event.comment.body, '/fast-forward') || contains(github.event.review.body, '/fast-forward'))
+    if: (github.event.issue.pull_request != '' && contains(github.event.comment.body, '/fast-forward')) || (github.event.review.pull_request != '' && contains(github.event.review.body, '/fast-forward'))
     steps:
       - name: Fast Forward
         uses: ndustrialio/actions/ffmerge@main
